@@ -25,6 +25,7 @@ repositories {
     mavenCentral()
     maven(url = "https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
     maven(url = "https://oss.sonatype.org/content/groups/public/")
+    maven(url = "https://m2.dv8tion.net/releases")
 }
 
 val shadowImplementation: Configuration by configurations.creating
@@ -33,32 +34,34 @@ configurations["implementation"].extendsFrom(shadowImplementation)
 dependencies {
     shadowImplementation(kotlin("stdlib"))
     compileOnly("org.spigotmc:spigot-api:$pluginVersion-R0.1-SNAPSHOT")
+    implementation("net.dv8tion:JDA:5.0.1")
+    implementation("net.sf.trove4j:trove4j:3.0.3")
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.15.0")
+    implementation("com.fasterxml.jackson.core:jackson-core:2.15.0")
+    implementation("com.fasterxml.jackson.core:jackson-annotations:2.15.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
 }
 
 configure<BukkitPluginDescription> {
-    main = "@group@.Main"
+    main = "com.github.ringoame196_s_mcPlugin.Main"
     version = pluginVersion
     apiVersion = "1." + pluginVersion.split(".")[1]
-    author = "@author@"
-    /*
-    コマンド追加用
+    author = "ringoame196_s_mcPlugin"
+
     commands {
-        register("test") {
-            description = "This is a test command!"
-            aliases = listOf("t")
-            permission = "testplugin.test"
-            usage = "Just run the command!"
+        register("discord") {
+            description = "ディスコードコマンド"
+            usage = "/discord"
         }
     }
-    */
 }
 
 tasks.withType<ShadowJar> {
     configurations = listOf(shadowImplementation)
     archiveClassifier.set("")
-    relocate("kotlin", "@group@.libs.kotlin")
-    relocate("org.intellij.lang.annotations", "@group@.libs.org.intellij.lang.annotations")
-    relocate("org.jetbrains.annotations", "@group@.libs.org.jetbrains.annotations")
+    relocate("kotlin", "com.github.ringoame196_s_mcPlugin.libs.kotlin")
+    relocate("org.intellij.lang.annotations", "com.github.ringoame196_s_mcPlugin.libs.org.intellij.lang.annotations")
+    relocate("org.jetbrains.annotations", "com.github.ringoame196_s_mcPlugin.libs.org.jetbrains.annotations")
 }
 
 tasks.named("build") {
